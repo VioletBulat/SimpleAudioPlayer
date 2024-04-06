@@ -34,7 +34,7 @@ public class SimpleAudioPlayer {
 
             String command;
             do {
-                System.out.println("Commands: play, pause, resume, stop, exit");
+                System.out.println("Commands: play, pause, resume, forward, rewind, stop, exit");
                 command = scanner.nextLine();
 
                 switch (command) {
@@ -46,6 +46,18 @@ public class SimpleAudioPlayer {
                         break;
                     case "resume":
                         clip.start();
+                        break;
+                    case "forward":
+                        // setFramePosition - устанавливает новую позицию воспроизведения
+                        // clip.getFramePosition() - получает текущую позицию воспроизведения в кадрах
+                        // clip.getFormat().getFrameRate() - рассчитывает количество кадров, соответствующее 10 секундам
+                        // и суммирует полученные данные, чтобы переместиться на 10 сек
+                        // clip.getFrameLength() - проверяет, чтобы новая позиция не превышала общее количество кадров
+                        // иначе устанавливается в конечную позицию
+                        clip.setFramePosition(Math.min(clip.getFramePosition() + (int)(clip.getFormat().getFrameRate() * 10), clip.getFrameLength()));
+                        break;
+                    case "rewind":
+                        clip.setFramePosition((int)Math.max(clip.getFramePosition() - clip.getFormat().getFrameRate() * 10, 0));
                         break;
                     case "stop":
                         clip.stop();
